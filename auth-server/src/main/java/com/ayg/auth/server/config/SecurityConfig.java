@@ -25,7 +25,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
 	/*
-	 * Publicación endpoints del server:
+	 * Publicación endpoints del server 
 	 * http://localhost:9000/.well-known/oauth-authorization-server
 	 */
 	@Bean
