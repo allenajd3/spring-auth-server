@@ -1,0 +1,38 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: client-app
+  security:
+    user:
+      name: user
+      password: user
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9000
+      client:
+        registration:
+          github-idp: 
+            provider: github
+            client-name: client-app-gh
+            client-id: e418d23d3c38790cab5a
+            client-secret: f61f27ce68c167bf82dd883393a21bfd58dcc09b
+            scope : user:email, read:user
+          client-app:
+            provider: spring
+            client-id: client-app
+            client-secret: "secret"
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/authorized
+            scope:
+            - openid
+            - profile
+            - read
+            - write
+            client-name: client-app
+        provider:
+          spring:
+            issuer-uri: http://127.0.0.1:9000
+          github:
+            user-name-attribute: email            
