@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AppUserService {
 
 	private final AppUserRepository appUserRepository;
-	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	public MessageDTO createUser (CreateAppuserDTO dto) {
@@ -32,13 +31,13 @@ public class AppUserService {
 				.password(passwordEncoder.encode(dto.password()))
 				.build();
 		
-		Set<Role> roles = new HashSet<>();
-		dto.roles().forEach(r->{
-			Role role = roleRepository.findByRole(RoleName.valueOf(r))
-					.orElseThrow(()-> new RuntimeException("role not found"));
-			roles.add(role);
-		});
-		appUser.setRoles(roles);
+//		Set<Role> roles = new HashSet<>();
+//		dto.roles().forEach(r->{
+//			Role role = roleRepository.findByRole(RoleName.valueOf(r))
+//					.orElseThrow(()-> new RuntimeException("role not found"));
+//			roles.add(role);
+//		});
+//		appUser.setRoles(roles);
 		appUserRepository.save(appUser);
 		return new MessageDTO("user " + appUser.getUsername() + " guardado");
 		

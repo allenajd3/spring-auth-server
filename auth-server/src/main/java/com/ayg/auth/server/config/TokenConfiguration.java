@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.util.StringUtils;
 
+import com.ayg.auth.server.entity.AppUser;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -63,24 +64,37 @@ public class TokenConfiguration {
 		return keyPair;
 	}
 
-	/*
-	 * Customización de los token
-	 * */
-	@Bean
-	public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer(){
-		return context -> {
-			Authentication principal = context.getPrincipal();
-			if(context.getTokenType().getValue().equals("id_token")) {
-				context.getClaims().claim("token_type", "id token");
-				
-			}
-			if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-				context.getClaims().claim("token_type", "access token");
-				Set<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-				context.getClaims()
-						.claim("roles", roles)
-						.claim("username", principal.getName());
-			}
-		};
-	}
+//	/*
+//	 * Customización de los token
+//	 * */
+//	@Bean
+//	public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer(){
+//		return context -> {
+//			Authentication principal = context.getPrincipal();
+//			if(context.getTokenType().getValue().equals("id_token")) {
+//				context.getClaims().claim("token_type", "id token");
+//				
+//			}
+//			if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+//				context.getClaims().claim("token_type", "access token");
+//				Set<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+//				context.getClaims()
+//						.claim("roles", roles)
+//						.claim("username", principal.getName());
+//			}
+//			
+//			if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+//	            AppUser customUserDetails = (AppUser) context.getPrincipal().getPrincipal();
+//
+//	            String clientId = context.getAuthorizationGrant().get
+//	            var appRoles = customUserDetails.getAppRoles().get(clientId);
+//
+//	            if (appRoles != null) {
+//	                context.getClaims().claim("roles", appRoles.stream()
+//	                        .map(GrantedAuthority::getAuthority)
+//	                        .collect(Collectors.toList()));
+//	            }
+//	        }
+//		};
+//	}
 }
