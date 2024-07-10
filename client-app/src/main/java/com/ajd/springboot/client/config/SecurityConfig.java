@@ -15,13 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-	
+
 	@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
 	private String issuerUri;
 
 	@Bean
-	SecurityFilterChain securityFilterCahin(HttpSecurity http) throws Exception{
-		
+	SecurityFilterChain securityFilterCahin(HttpSecurity http) throws Exception {
+
+		// @formatter:off
 		return http
 				.authorizeHttpRequests(auth -> 
 					auth.requestMatchers("/foo/**").permitAll()
@@ -30,11 +31,11 @@ public class SecurityConfig {
 						.jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri)))
 				)
 				.build();
-		
+		// @formatter:on
 	}
+
 	/**
-	 * Convierte el claim roles del auth server 
-	 * a granted auth para SPRING
+	 * Convierte el claim roles del auth server a granted auth para SPRING
 	 */
 	@Bean
 	public JwtAuthenticationConverter jwtAuthenticationConverter() {

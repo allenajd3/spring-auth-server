@@ -77,7 +77,9 @@ public class TokenConfiguration {
 			if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
 				context.getClaims().claim("token_type", "access token");
 				Set<String> roles = principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-				context.getClaims().claim("roles", roles).claim("username", principal.getName());
+				context.getClaims()
+						.claim("roles", roles)
+						.claim("username", principal.getName());
 			}
 		};
 	}

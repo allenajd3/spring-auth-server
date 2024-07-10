@@ -54,7 +54,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authorize) -> 
-		authorize.requestMatchers("/auth/**","/h2-console/**","/client/**","/login","/logout").permitAll()
+		authorize.requestMatchers("/auth/**","/h2-console/**","/client/**","/login","/logout", "/error").permitAll()
 			.anyRequest().authenticated())
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
