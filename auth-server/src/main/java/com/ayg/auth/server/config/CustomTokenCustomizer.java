@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.ayg.auth.server.entity.CustomUserDetails;
 
-@Component
+@Component 
 public class CustomTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
     @Override

@@ -84,16 +84,7 @@ public class TokenConfiguration {
 //			}
 //			
 //			if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-//	            AppUser customUserDetails = (AppUser) context.getPrincipal().getPrincipal();
-//
-//	            String clientId = context.getAuthorizationGrant().get
-//	            var appRoles = customUserDetails.getAppRoles().get(clientId);
-//
-//	            if (appRoles != null) {
-//	                context.getClaims().claim("roles", appRoles.stream()
-//	                        .map(GrantedAuthority::getAuthority)
-//	                        .collect(Collectors.toList()));
-//	            }
+//				
 //	        }
 //		};
 //	}

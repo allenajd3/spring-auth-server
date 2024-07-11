@@ -25,8 +25,6 @@ public class DataLoader implements CommandLineRunner {
         AppUser user = userRepository.findByUsername("admin").orElse(null);
         if (user != null) {
             System.out.println("User: " + user.getUsername());
-            Optional<Set<AppUserRole>> userRoles = appUserRoleRepository.findByUserId(user.getId());
-            AppUserRole rol = appUserRoleRepository.findById(1).orElse(null);
             user.getUserRoles().forEach(role -> 
                 System.out.println("Role: " + role.getRole().getName() + " Client: " + role.getClientId())
             );
