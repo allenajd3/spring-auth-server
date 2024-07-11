@@ -11,7 +11,7 @@ import com.ayg.auth.server.enums.RoleName;
 @Repository
 public interface RoleRepository extends JpaRepository<Role,Integer>{
 	
-	Optional<Role> findByRole(RoleName rolName);
+	//Optional<Role> findByRole(RoleName rolName);
 
 }
 

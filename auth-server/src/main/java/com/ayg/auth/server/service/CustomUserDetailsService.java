@@ -14,6 +14,8 @@ import com.ayg.auth.server.entity.AppUser;
 import com.ayg.auth.server.entity.CustomUserDetails;
 import com.ayg.auth.server.repository.AppUserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -21,19 +23,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AppUserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        
+        user.getUserRoles();
 
         List<SimpleGrantedAuthority> authorities = user.getUserRoles().stream()
                 .map(userRole -> new SimpleGrantedAuthority(userRole.getRole().getName().name()))
                 .collect(Collectors.toList());
 
-        return CustomUserDetails.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .userRoles(user.getUserRoles())
-                .build();
+        return CustomUserDetails.build(user.getUsername(), user.getPassword(), authorities, user.getUserRoles());
     }
 }

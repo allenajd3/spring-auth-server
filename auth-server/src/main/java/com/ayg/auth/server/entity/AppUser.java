@@ -1,5 +1,6 @@
 package com.ayg.auth.server.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -29,5 +30,5 @@ public class AppUser {
     private String password;
     
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<AppUserRole> userRoles;
+    private List<AppUserRole> userRoles;
 }
