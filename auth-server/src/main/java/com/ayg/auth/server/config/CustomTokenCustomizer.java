@@ -21,9 +21,12 @@ public class CustomTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingC
             var appRoles = customUserDetails.getAppRoles().get(clientId);
 
             if (appRoles != null) {
-                context.getClaims().claim("roles", appRoles.stream()
+                context.getClaims()
+                	.claim("roles", appRoles.stream()
                         .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()))
+                	.claim("username", customUserDetails.getUsername());
+                	
             }
         }
     }
