@@ -9,14 +9,20 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+
+import com.ayg.auth.server.config.grant.password.GrantPasswordAuthenticationProvider;
+import com.ayg.auth.server.config.grant.password.OAuth2GrantPasswordAuthenticationConverter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -30,11 +36,18 @@ public class SecurityConfig {
 	 */
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain authorizationServerSecurityFilterChain(
+			HttpSecurity http,
+			GrantPasswordAuthenticationProvider grantPasswordAuthenticationProvider
+	) throws Exception {
 
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-				.oidc(Customizer.withDefaults()); // Enable OpenID
+		.tokenEndpoint(tokenEndpoint ->
+       			tokenEndpoint
+       				.accessTokenRequestConverter(new OAuth2GrantPasswordAuthenticationConverter())
+       				.authenticationProvider(grantPasswordAuthenticationProvider))
+		.oidc(Customizer.withDefaults()); // Enable OpenID
 																										// Connect 1.0
 		http
 				// Redirect to the login page when not authenticated from the
@@ -78,6 +91,16 @@ public class SecurityConfig {
                 .ignoring()
                 .requestMatchers("/webjars/**", "/images/**", "/css/**", "/assets/**", "/favicon.ico");
     }
+	
+	@Bean
+	public GrantPasswordAuthenticationProvider grantPasswordAuthenticationProvider(
+	   UserDetailsService userDetailsService, OAuth2TokenGenerator<?> jwtTokenCustomizer,
+	   OAuth2AuthorizationService authorizationService, PasswordEncoder passwordEncoder
+	) {
+	   return new GrantPasswordAuthenticationProvider(
+	       authorizationService, jwtTokenCustomizer, userDetailsService, passwordEncoder
+	   );
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
