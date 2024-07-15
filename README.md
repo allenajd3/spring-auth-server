@@ -1,5 +1,5 @@
 # spring-auth-server
-Prueba de concepto SpringBoot aothorization server:
+Prueba de concepto SpringBoot authorization server:
 
     Oauth2 con authorization_code y PKCE
     URL debug de flujo --> https://oauthdebugger.com
