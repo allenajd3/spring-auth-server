@@ -45,6 +45,19 @@ public class ClientService implements RegisteredClientRepository {
         clientRepository.save(client);
         return new MessageDTO("client " + client.getClientId() + " saved");
     }
+    
+    public Boolean delete(String clientId){
+    	Client client = clientRepository.findByClientId(clientId)
+                .orElse(null);
+    	if (client!=null) {
+    		log.info("Deleting client: "+ clientId);
+    		clientRepository.delete(client);
+    		return true;
+    	}else {
+    		log.info("Client not found!!!! client: "+ clientId);
+    		return false;
+    	}
+    }
 
     // private methods
     private Client clientFromDto(CreateClientDTO dto){

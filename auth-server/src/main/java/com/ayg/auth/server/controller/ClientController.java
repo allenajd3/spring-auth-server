@@ -2,6 +2,8 @@ package com.ayg.auth.server.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,12 @@ public class ClientController {
 	@PostMapping("/create")
 	public ResponseEntity<MessageDTO> createUser (@RequestBody CreateClientDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(dto));
+	}
+	
+	@DeleteMapping("/delete/{clientId}")
+	public ResponseEntity<HttpStatus> deleteUser(@PathVariable String clientId){
+		Boolean deleted = clientService.delete(clientId);
+		
+	    return deleted ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
