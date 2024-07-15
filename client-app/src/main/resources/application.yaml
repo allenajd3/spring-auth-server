@@ -13,12 +13,12 @@ spring:
           issuer-uri: http://127.0.0.1:9000
       client:
         registration:
-          github-idp: 
-            provider: github
-            client-name: client-app-gh
-            client-id: e418d23d3c38790cab5a
-            client-secret: f61f27ce68c167bf82dd883393a21bfd58dcc09b
-            scope : user:email, read:user
+#          github-idp: 
+#            provider: github
+#            client-name: client-app-gh
+#            client-id: e418d23d3c38790cab5a
+#            client-secret: f61f27ce68c167bf82dd883393a21bfd58dcc09b
+#            scope : user:email, read:user
           client-app:
             provider: spring
             client-id: client-app
@@ -28,8 +28,7 @@ spring:
             scope:
             - openid
             - profile
-            - read
-            - write
+            - user:email
             client-name: client-app
         provider:
           spring:
